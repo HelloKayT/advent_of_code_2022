@@ -53,7 +53,7 @@ fn run_loop(reader: &mut BufReader<File>) {
     // loop over the crates to print out
     let mut final_string: String = String::from("");
     for stack in crate_stack.crates {
-        match (*stack).borrow().last() {
+        match (stack).borrow().last() {
             Some(last_crate) => {
                 final_string.push(last_crate.contents);
             }
@@ -68,8 +68,8 @@ fn run_loop(reader: &mut BufReader<File>) {
 fn part1_rearrange(line_cmd: &MoveLine, crate_stack: &mut CrateStack) {
     // act on the command
     for _i in 0..line_cmd.num_crates {
-        match (*(crate_stack.crates[line_cmd.src - 1])).borrow_mut().pop() {
-            Some(Crate) => (*(crate_stack.crates[line_cmd.dst - 1])).borrow_mut().push(Crate),
+        match ((crate_stack.crates[line_cmd.src - 1])).borrow_mut().pop() {
+            Some(Crate) => ((crate_stack.crates[line_cmd.dst - 1])).borrow_mut().push(Crate),
             None => panic!("Popped from empty stack")
         }
     }
@@ -78,12 +78,12 @@ fn part1_rearrange(line_cmd: &MoveLine, crate_stack: &mut CrateStack) {
 fn part2_no_extra_copy(line_cmd: &MoveLine, crate_stack: &mut CrateStack) {
     let mut move_index: usize = 0;
     {
-        let src_stack_len = (*(crate_stack.crates[line_cmd.src-1])).borrow().len();
+        let src_stack_len = ((crate_stack.crates[line_cmd.src-1])).borrow().len();
         move_index = src_stack_len - line_cmd.num_crates;
-        let src_slice = &(*(crate_stack.crates[line_cmd.src-1])).borrow()[move_index..src_stack_len];
-        (*(crate_stack.crates[line_cmd.dst-1])).borrow_mut().extend_from_slice(src_slice);
+        let src_slice = &((crate_stack.crates[line_cmd.src-1])).borrow()[move_index..src_stack_len];
+        ((crate_stack.crates[line_cmd.dst-1])).borrow_mut().extend_from_slice(src_slice);
     }
-    (*(crate_stack.crates[line_cmd.src-1])).borrow_mut().truncate(move_index);
+    ((crate_stack.crates[line_cmd.src-1])).borrow_mut().truncate(move_index);
 }
 
 

@@ -50,7 +50,7 @@ pub fn move_line_lexer(input: &str) -> MoveLine {
 
 #[derive(Debug)]
 pub struct CrateStack {
-    pub crates: Vec<Rc<RefCell<Vec<Crate>>>>,
+    pub crates: Vec<RefCell<Vec<Crate>>>,
     pub stack_width: usize
 }
 
@@ -73,7 +73,7 @@ impl CrateStack {
         };
 
         for _i in 0..num_stacks {
-            new_struct.crates.push(Rc::new(RefCell::new(Vec::<Crate>::new())));
+            new_struct.crates.push(RefCell::new(Vec::<Crate>::new()));
         }
         return new_struct;
     }
@@ -95,7 +95,7 @@ impl CrateStack {
                     // which index are we at
                     let crate_index = self.get_crate_index(cursor);
                     let new_crate = Crate {contents: stack_chars[cursor + 1]};
-                    (*(self.crates[crate_index])).borrow_mut().insert(0, new_crate);
+                    (self.crates[crate_index]).borrow_mut().insert(0, new_crate);
                     // advance the cursor by 2 to consume the token: char and closing
                     // bracket
                     cursor += 2
